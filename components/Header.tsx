@@ -17,7 +17,7 @@ export const Header = () => {
             width="100%"
           />
           <ul>
-            <li>Create project</li>
+            <li onClick={() => router.push("/create")}>Create project</li>
             <li onClick={() => router.push("/login")}>Login</li>
           </ul>
         </ContentWrapper>

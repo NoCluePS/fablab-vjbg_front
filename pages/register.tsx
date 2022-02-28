@@ -4,9 +4,9 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import { SectionWrapper } from "components/wrappers/SectionWrapper";
 import { Formik } from "formik";
 import { FormInput } from "components/items/Input";
-import { LoginFunc } from "api";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { RegisterFunc } from "api";
 
 const Login = () => {
   const router = useRouter();
@@ -15,44 +15,43 @@ const Login = () => {
     <SectionWrapper>
       <LoginWrapper>
         <Text color="gray.500" fontWeight={700} mb={2} fontSize="1.25rem">
-          Login
+          Register
         </Text>
         <CardWrapper>
           <Formik
-            initialValues={{ email: "", password: "" }}
-            validate={({ email, password }) => {
+            initialValues={{
+              email: "",
+              password: "",
+              secret: "",
+              name: "",
+              confirmPassword: "",
+            }}
+            validate={({ email, password, confirmPassword }) => {
               const errors: any = {};
 
               if (!email) {
                 errors.email = "Required!";
               } else if (!password) {
                 errors.password = "Required!";
+              } else if (password !== confirmPassword) {
+                errors.password = "Should match!";
+                errors.confirmPassword = "Should match!";
               }
 
               if (
-                !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+                !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) &&
+                !errors.email
               ) {
                 errors.email = "Invalid email address!";
               }
 
               return errors;
             }}
-            onSubmit={async ({ email, password }) => {
-              try {
-                await LoginFunc(email, password);
-                router.push("/");
-              } catch (e) {
-                console.log(e);
-              }
+            onSubmit={({ email, password, name, secret }) => {
+              RegisterFunc(email, password, name, secret);
             }}
           >
-            {({
-              values,
-              errors,
-              handleChange,
-              handleSubmit,
-              /* and other goodies */
-            }) => (
+            {({ values, errors, handleChange, handleSubmit }) => (
               <Box maxW={350}>
                 <form onSubmit={handleSubmit}>
                   <FormInput
@@ -65,12 +64,41 @@ const Login = () => {
                     onChange={handleChange}
                   />
                   <FormInput
-                    name="password"
-                    placeHolder="Enter an password address"
-                    title="Password"
+                    name="name"
+                    placeHolder="Enter an name"
+                    title="Name"
+                    type="name"
+                    value={values.name}
+                    error={errors.name}
+                    onChange={handleChange}
+                  />
+                  <Box gap={4} display="flex">
+                    <FormInput
+                      name="password"
+                      placeHolder="Enter password"
+                      title="Password"
+                      type="password"
+                      value={values.password}
+                      error={errors.password}
+                      onChange={handleChange}
+                    />
+                    <FormInput
+                      name="confirmPassword"
+                      placeHolder="Confirm password"
+                      title="Confirm Password"
+                      type="password"
+                      value={values.confirmPassword}
+                      error={errors.confirmPassword}
+                      onChange={handleChange}
+                    />
+                  </Box>
+                  <FormInput
+                    name="secret"
+                    placeHolder="Secret registration key"
+                    title="Secret"
                     type="password"
-                    value={values.password}
-                    error={errors.password}
+                    value={values.secret}
+                    error={errors.secret}
                     onChange={handleChange}
                   />
                   <Box
@@ -80,12 +108,11 @@ const Login = () => {
                     mt={4}
                   >
                     <Button w="40" colorScheme="blue" type="submit">
-                      Log in
+                      Register
                     </Button>
                   </Box>
                   <Text mt={3} align="right">
-                    Don&apos;t have an account?{" "}
-                    <Link href="/register">Register</Link>
+                    Already have an account? <Link href="/login">Login</Link>
                   </Text>
                 </form>
               </Box>
