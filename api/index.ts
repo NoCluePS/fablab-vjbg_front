@@ -15,6 +15,7 @@ export const CreateProject = (
   images: string[]
 ) => {
   axios
+    .create({ withCredentials: true })
     .post(
       API + Routes.Projects,
       JSON.stringify({
@@ -44,7 +45,7 @@ export const GetProjects = async () => {
 };
 
 export const LoginFunc = async (email: string, password: string) => {
-  const response = await axios.post(
+  const response = await axios.create({ withCredentials: true }).post(
     API + Routes.Login,
     JSON.stringify({
       email,
@@ -67,6 +68,7 @@ export const RegisterFunc = (
   secret: string
 ) => {
   axios
+    .create({ withCredentials: true })
     .post(
       API + Routes.Register,
       JSON.stringify({
