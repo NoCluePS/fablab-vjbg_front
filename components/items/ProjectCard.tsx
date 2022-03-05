@@ -32,11 +32,11 @@ export const ProjectCard: React.FC<ProjectProps> = ({
     <Box
       cursor="pointer"
       backgroundColor="gray.50"
-      borderRadius="md"
+      borderRadius="xl"
       boxShadow="2xl"
     >
       <Image
-        borderTopRadius="md"
+        borderTopRadius="xl"
         src={imagesArr[0]}
         alt="thumbnail"
         mx="auto"

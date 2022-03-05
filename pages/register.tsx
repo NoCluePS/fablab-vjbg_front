@@ -1,15 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Formik } from "formik";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { SectionWrapper } from "components/wrappers/SectionWrapper";
-import { Formik } from "formik";
 import { FormInput } from "components/items/Input";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { RegisterFunc } from "api";
+import { GetCurrentUser, RegisterFunc } from "api";
 
 const Login = () => {
   const router = useRouter();
+
+  useEffect(() => {
+    GetCurrentUser().then((user) => {
+      if (user) {
+        router.push("/");
+      }
+    });
+  }, []);
 
   return (
     <SectionWrapper>
