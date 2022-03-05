@@ -6,7 +6,19 @@ enum Routes {
   Login = "/login",
   Register = "/register",
   Projects = "/project",
+  User = "/user",
 }
+
+export const GetCurrentUser = async () => {
+  try {
+    const response = await axios
+      .create({ withCredentials: true })
+      .get(API + Routes.User);
+    return response.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 export const CreateProject = (
   title: string,

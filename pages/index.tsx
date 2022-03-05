@@ -1,5 +1,6 @@
 import { Grid } from "@chakra-ui/react";
 import { GetProjects } from "api";
+import { ProjectCard } from "components/items/ProjectCard";
 import { SectionWrapper } from "components/wrappers/SectionWrapper";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -10,7 +11,9 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     GetProjects().then(({ data }) => {
-      setProjects(data);
+      if (data) {
+        setProjects(data);
+      }
     });
   }, []);
 
@@ -26,10 +29,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SectionWrapper>
-        <Grid mt={5}>
+        <Grid mx={1} templateColumns="repeat(3, 1fr)" mt={5} gap={3}>
           {!!projects.length &&
             projects.map((project: any) => (
-              <h1 key={project.ID}>{project.title}</h1>
+              <ProjectCard key={project.ID} {...project} />
             ))}
         </Grid>
       </SectionWrapper>

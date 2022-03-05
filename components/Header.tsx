@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { SectionWrapper } from "./wrappers/SectionWrapper";
 import { useRouter } from "next/router";
+import { GetCurrentUser } from "api";
 
 export const Header = () => {
+  const [user, setUser] = useState<any>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    GetCurrentUser().then((user) => {
+      setUser(user);
+    });
+  }, [router.pathname]);
 
   return (
     <HeaderWrapper>
@@ -17,8 +25,14 @@ export const Header = () => {
             width="100%"
           />
           <ul>
-            <li onClick={() => router.push("/create")}>Create project</li>
-            <li onClick={() => router.push("/login")}>Login</li>
+            {user ? (
+              <>
+                <li onClick={() => router.push("/create")}>Create project</li>
+                <a>{user.name}</a>
+              </>
+            ) : (
+              <li onClick={() => router.push("/login")}>Login</li>
+            )}
           </ul>
         </ContentWrapper>
       </SectionWrapper>
