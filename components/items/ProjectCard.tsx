@@ -39,6 +39,7 @@ export const ProjectCard: React.FC<ProjectProps> = ({
         borderTopRadius="xl"
         src={imagesArr[0]}
         alt="thumbnail"
+        maxW="100%"
         mx="auto"
         mb={1.5}
       />
