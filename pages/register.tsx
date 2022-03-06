@@ -57,6 +57,7 @@ const Login = () => {
             }}
             onSubmit={({ email, password, name, secret }) => {
               RegisterFunc(email, password, name, secret);
+              router.push("/");
             }}
           >
             {({ values, errors, handleChange, handleSubmit }) => (

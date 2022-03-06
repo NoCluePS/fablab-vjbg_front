@@ -48,9 +48,21 @@ export const CreateProject = async (
   }
 };
 
+export const DeleteProject = async (id: string) => {
+  const response = await axios
+    .create({ withCredentials: true })
+    .delete(API + Routes.Projects + `/${id}`);
+  return response.data;
+};
+
 export const GetProjects = async () => {
   const response = await axios.get(API + Routes.Projects);
   return response;
+};
+
+export const GetProject = async (id: string) => {
+  const response = await axios.get(API + Routes.Projects + `/${id}`);
+  return response.data;
 };
 
 export const LoginFunc = async (email: string, password: string) => {
@@ -99,4 +111,11 @@ export const RegisterFunc = (
       console.log(e.message);
       return e.message;
     });
+};
+
+export const Logout = async () => {
+  const response = await axios
+    .create({ withCredentials: true })
+    .delete(API + Routes.Login);
+  return response.data;
 };

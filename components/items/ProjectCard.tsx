@@ -27,7 +27,11 @@ export const ProjectCard: React.FC<ProjectProps> = ({
   CreatedAt,
   onClick,
 }) => {
-  const imagesArr = images.split("{");
+  const imagesArr = images
+    ? images.split("{")
+    : [
+        "https://shahpourpouyan.com/wp-content/uploads/2018/10/orionthemes-placeholder-image-1.png",
+      ];
   const router = useRouter();
 
   return (
@@ -36,7 +40,7 @@ export const ProjectCard: React.FC<ProjectProps> = ({
       cursor={onClick ? "pointer" : "normal"}
       backgroundColor="gray.50"
       borderRadius="xl"
-      boxShadow="2xl"
+      boxShadow="md"
     >
       <Image
         borderTopRadius="xl"

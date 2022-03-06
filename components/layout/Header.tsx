@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { SectionWrapper } from "../wrappers/SectionWrapper";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { GetCurrentUser } from "api";
+import { SectionWrapper } from "../wrappers/SectionWrapper";
+import { GetCurrentUser, Logout } from "api";
 
 export const Header = () => {
   const [user, setUser] = useState<any>(null);
+  const [showSettings, setShowSettings] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -13,6 +15,15 @@ export const Header = () => {
       setUser(user);
     });
   }, [router.pathname]);
+
+  const handleLogout = () => {
+    Logout().then(({ success }) => {
+      if (success) {
+        setShowSettings(false);
+        router.push("/login");
+      }
+    });
+  };
 
   return (
     <HeaderWrapper>
@@ -26,10 +37,28 @@ export const Header = () => {
           />
           <ul>
             {user ? (
-              <>
+              <Flex gap={5} position="relative">
                 <li onClick={() => router.push("/create")}>Create project</li>
-                <a>{user.name}</a>
-              </>
+                <Text
+                  cursor="pointer"
+                  onClick={() => setShowSettings(!showSettings)}
+                >
+                  {user.name}
+                </Text>
+                {showSettings && (
+                  <Box
+                    p={2}
+                    boxShadow="xl"
+                    borderRadius="xl"
+                    backgroundColor="white"
+                    position="absolute"
+                    right={0}
+                    top={8}
+                  >
+                    <Button onClick={handleLogout}>Log out</Button>
+                  </Box>
+                )}
+              </Flex>
             ) : (
               <li onClick={() => router.push("/login")}>Login</li>
             )}

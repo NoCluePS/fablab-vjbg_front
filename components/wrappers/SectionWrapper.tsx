@@ -4,7 +4,7 @@ import React from "react";
 export const SectionWrapper: React.FC = ({ children }) => {
   return (
     <Box mx="auto" maxW="7xl">
-      {children}
+      <Box mx={4}>{children}</Box>
     </Box>
   );
 };
