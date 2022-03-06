@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { SectionWrapper } from "./wrappers/SectionWrapper";
+import { SectionWrapper } from "../wrappers/SectionWrapper";
 import { useRouter } from "next/router";
 import { GetCurrentUser } from "api";
 

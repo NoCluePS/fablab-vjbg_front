@@ -20,15 +20,14 @@ export const GetCurrentUser = async () => {
   }
 };
 
-export const CreateProject = (
+export const CreateProject = async (
   title: string,
   description: string,
   supervisor: string,
   images: string[]
 ) => {
-  axios
-    .create({ withCredentials: true })
-    .post(
+  try {
+    const response = await axios.create({ withCredentials: true }).post(
       API + Routes.Projects,
       JSON.stringify({
         title,
@@ -41,14 +40,12 @@ export const CreateProject = (
           "Content-type": "application/json",
         },
       }
-    )
-    .then(({ data }) => {
-      return data;
-    })
-    .catch((e) => {
-      console.log(e.message);
-      return e.message;
-    });
+    );
+
+    return response.data;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const GetProjects = async () => {

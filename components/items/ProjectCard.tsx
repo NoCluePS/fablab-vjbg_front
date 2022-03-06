@@ -4,33 +4,36 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { BsPersonCircle } from "react-icons/bs";
 import { MdSupervisorAccount } from "react-icons/md";
+import { useRouter } from "next/router";
 dayjs.extend(relativeTime);
 
 export interface ProjectProps {
   CreatedAt: string;
-  DeletedAt: null | string;
   ID: number;
-  UpdatedAt: string;
   author: string;
   description: string;
   images: string;
   supervisor: string;
   title: string;
+  onClick: boolean;
 }
 
 export const ProjectCard: React.FC<ProjectProps> = ({
   author,
-  description,
+  ID,
   images,
   supervisor,
   title,
   CreatedAt,
+  onClick,
 }) => {
-  const imagesArr = images.split(",");
+  const imagesArr = images.split("{");
+  const router = useRouter();
 
   return (
     <Box
-      cursor="pointer"
+      onClick={() => onClick && router.push(`/${ID}`)}
+      cursor={onClick ? "pointer" : "normal"}
       backgroundColor="gray.50"
       borderRadius="xl"
       boxShadow="2xl"

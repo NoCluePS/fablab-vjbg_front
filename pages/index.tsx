@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         <Grid mx={1} templateColumns="repeat(3, 1fr)" mt={5} gap={3}>
           {!!projects.length &&
             projects.map((project: any) => (
-              <ProjectCard key={project.ID} {...project} />
+              <ProjectCard onClick key={project.ID} {...project} />
             ))}
         </Grid>
       </SectionWrapper>
