@@ -1,12 +1,14 @@
-import { Grid } from "@chakra-ui/react";
-import { GetProjects } from "api";
-import { ProjectCard } from "components/items/ProjectCard";
-import { SectionWrapper } from "components/wrappers/SectionWrapper";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { Box, Grid, Input } from "@chakra-ui/react";
+import { ProjectCard } from "components/items/ProjectCard";
+import { SectionWrapper } from "components/wrappers/SectionWrapper";
+import { GetProjects } from "api";
+import { FaSearch } from "react-icons/fa";
 
 const Home: NextPage = () => {
+  const [search, setSearch] = useState("");
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -32,11 +34,19 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SectionWrapper>
+        <Input
+          placeholder="Search projects"
+          mt={8}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <Grid mx={1} templateColumns="repeat(3, 1fr)" mt={5} gap={3}>
           {!!projects.length &&
-            projects.map((project: any) => (
-              <ProjectCard onClick key={project.ID} {...project} />
-            ))}
+            projects
+              .filter(({ title }) => (title as string).includes(search))
+              .map((project: any) => (
+                <ProjectCard onClick key={project.ID} {...project} />
+              ))}
         </Grid>
       </SectionWrapper>
     </div>
