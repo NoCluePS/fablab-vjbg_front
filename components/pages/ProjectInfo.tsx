@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
 import { useRecoilState } from "recoil";
 import { Formik } from "formik";
-import { Box, Button, Flex, Input, Text, Textarea } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { SectionWrapper } from "components/wrappers/SectionWrapper";
 import { createState } from "state";
+
+import 'react-markdown-editor-lite/lib/index.css';
+
+const mdParser = new MarkdownIt();
 
 interface Props {
   onNext: () => void;
@@ -27,10 +33,11 @@ export const ProjectInfo: React.FC<Props> = ({ onNext }) => {
           initialValues={{ title: "", description: "", supervisor: "" }}
           validate={({ title, description, supervisor }) => {
             const errors: any = {};
+            console.log(title, description, supervisor)
 
             if (!title) {
               errors.title = "Required!";
-            } else if (!description) {
+            } else if (!projectInfo.description) {
               errors.description = "Required!";
             } else if (!supervisor) {
               errors.supervisor = "Required!";
@@ -38,8 +45,8 @@ export const ProjectInfo: React.FC<Props> = ({ onNext }) => {
 
             return errors;
           }}
-          onSubmit={(values) => {
-            setProjectInfo({ ...projectInfo, ...values });
+          onSubmit={({ title, supervisor }) => {
+            setProjectInfo({ ...projectInfo, title, supervisor });
             onNext();
           }}
         >
@@ -47,11 +54,12 @@ export const ProjectInfo: React.FC<Props> = ({ onNext }) => {
             <form onSubmit={handleSubmit}>
               <Box minW="md" mt={5} borderRadius="xl" boxShadow="xl" p={4}>
                 <Flex gap={3}>
-                  <Flex direction="column" justifyContent="flex-start">
+                  <Flex width="100%" direction="column" justifyContent="flex-start">
                     <Text color={!!errors.title ? "red.400" : "gray.400"}>
                       Title
                     </Text>
                     <Input
+                      width="100%"
                       name="title"
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -62,11 +70,12 @@ export const ProjectInfo: React.FC<Props> = ({ onNext }) => {
                       <Text color="red.400">{errors.title}</Text>
                     )}
                   </Flex>
-                  <Flex direction="column" justifyContent="flex-start">
+                  <Flex width="100%" direction="column" justifyContent="flex-start">
                     <Text color={!!errors.supervisor ? "red.400" : "gray.400"}>
                       Supervisor
                     </Text>
                     <Input
+                      width="100%"
                       name="supervisor"
                       onChange={handleChange}
                       onBlur={handleBlur}
@@ -82,14 +91,7 @@ export const ProjectInfo: React.FC<Props> = ({ onNext }) => {
                   <Text color={!!errors.description ? "red.400" : "gray.400"}>
                     Desescription
                   </Text>
-                  <Textarea
-                    resize="vertical"
-                    name="description"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    isInvalid={!!errors.description}
-                    value={values.description}
-                  />
+                  <MdEditor name="description" onChange={({ html }) => setProjectInfo({ ...projectInfo, description: html })} style={{ height: '250px' }} renderHTML={text => mdParser.render(text)} />
                   {!!errors.description && (
                     <Text color="red.400">{errors.description}</Text>
                   )}

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Box, Grid, Input } from "@chakra-ui/react";
+import { Grid, Input } from "@chakra-ui/react";
 import { ProjectCard } from "components/items/ProjectCard";
 import { SectionWrapper } from "components/wrappers/SectionWrapper";
 import { GetProjects } from "api";
-import { FaSearch } from "react-icons/fa";
 
 const Home: NextPage = () => {
   const [search, setSearch] = useState("");
@@ -18,10 +17,6 @@ const Home: NextPage = () => {
       }
     });
   }, []);
-
-  useEffect(() => {
-    console.log(projects);
-  }, [projects]);
 
   return (
     <div>

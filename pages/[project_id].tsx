@@ -18,6 +18,8 @@ const ProjectPage = () => {
   const [projectInfo, setProjectInfo] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
 
+  console.log(projectInfo);
+
   useEffect(() => {
     GetProject(project_id as string).then((project) => {
       setProjectInfo(project);
@@ -81,9 +83,7 @@ const ProjectPage = () => {
             <BsFillJournalBookmarkFill />
             <Text width="100%">Description</Text>
           </Flex>
-          <Text maxW="sm" color="gray.600">
-            {projectInfo.description}
-          </Text>
+          <Text dangerouslySetInnerHTML={{ __html: projectInfo.description }} maxW="sm" color="gray.600" />
         </Box>
       </Flex>
     </SectionWrapper>
