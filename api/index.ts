@@ -7,6 +7,7 @@ enum Routes {
   Register = "/register",
   Projects = "/project",
   User = "/user",
+  Reg = "/reg",
 }
 
 export const GetCurrentUser = async () => {
@@ -80,6 +81,18 @@ export const LoginFunc = async (email: string, password: string) => {
   );
 
   return response;
+};
+
+export const CheckRegisterKey = async (register_key: string) => {
+  const { data } = await axios
+    .create({ withCredentials: true })
+    .post(API + Routes.Reg, JSON.stringify({ register_key }), {
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+  return data.success;
 };
 
 export const RegisterFunc = (

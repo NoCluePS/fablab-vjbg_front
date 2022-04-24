@@ -6,7 +6,7 @@ import { Formik } from "formik";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { SectionWrapper } from "components/wrappers/SectionWrapper";
 import { FormInput } from "components/items/Input";
-import { GetCurrentUser, RegisterFunc } from "api";
+import { CheckRegisterKey, GetCurrentUser, RegisterFunc } from "api";
 
 const Login = () => {
   const router = useRouter();
@@ -34,8 +34,11 @@ const Login = () => {
               name: "",
               confirmPassword: "",
             }}
-            validate={({ email, password, confirmPassword }) => {
+            validate={async ({ email, password, confirmPassword, secret, name }) => {
               const errors: any = {};
+              const response = await CheckRegisterKey(secret)
+
+              console.log(response)
 
               if (!email) {
                 errors.email = "Required!";
@@ -44,6 +47,10 @@ const Login = () => {
               } else if (password !== confirmPassword) {
                 errors.password = "Should match!";
                 errors.confirmPassword = "Should match!";
+              } else if (!secret) {
+                errors.secret = "Required!"
+              } else if (!name) {
+                errors.name = "Name is required!"
               }
 
               if (
@@ -53,6 +60,7 @@ const Login = () => {
                 errors.email = "Invalid email address!";
               }
 
+              if (!response) errors.secret = "Secret key is not valid"
               return errors;
             }}
             onSubmit={({ email, password, name, secret }) => {
@@ -105,7 +113,7 @@ const Login = () => {
                     name="secret"
                     placeHolder="Secret registration key"
                     title="Secret"
-                    type="password"
+                    type="text"
                     value={values.secret}
                     error={errors.secret}
                     onChange={handleChange}
@@ -120,9 +128,9 @@ const Login = () => {
                       Register
                     </Button>
                   </Box>
-                  <Text mt={3} align="right">
-                    Already have an account? <Link href="/login">Login</Link>
-                  </Text>
+                  <Button color="blue.500" mt={3}>
+                    <Link href="/login">Login</Link>
+                  </Button>
                 </form>
               </Box>
             )}

@@ -91,10 +91,9 @@ const Login = () => {
                       Log in
                     </Button>
                   </Box>
-                  <Text mt={3} align="right">
-                    Don&apos;t have an account?{" "}
+                  <Button mt={3} color="blue.500">
                     <Link href="/register">Register</Link>
-                  </Text>
+                  </Button>
                 </form>
               </Box>
             )}
